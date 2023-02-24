@@ -6,4 +6,3 @@ Yêu cầu:
 - cấp phí hoạt động cho các đội
 - tổ chức quản lý thành viên trong các phong trào tình nguyện
 - báo cáo thống kê
-- sv bổ sung thêm các yêu cầu theo ý tưởng"
