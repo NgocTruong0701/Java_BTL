@@ -17,9 +17,11 @@ import model.User;
  * @author Lê Ngọc Trường
  */
 public class QLSinhVien extends javax.swing.JFrame {
+
     UserController userController = new UserController();
     Noti noti = new Noti(this);
     ArrayList<User> listUser;
+
     /**
      * Creates new form QLSinhVien
      */
@@ -45,11 +47,8 @@ public class QLSinhVien extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
-                // không cho phép chỉnh sửa cột 0 và 1
-                if(column == 0 || column == 1){
-                    return false;
-                }
-                return true;
+                // chỉ được xem, không được sửa row and column nào hết
+                return false;
             }
         };
         model.addColumn("ID");
@@ -80,6 +79,8 @@ public class QLSinhVien extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý thành viên");
 
+        // Lắng nghe sự kiện khi người dùng thay đổi giá trị trong JTable
+        tableDSSinhVien.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tableDSSinhVien);
 
         javax.swing.GroupLayout panelDanhSachLayout = new javax.swing.GroupLayout(panelDanhSach);
@@ -180,6 +181,22 @@ public class QLSinhVien extends javax.swing.JFrame {
 
     private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
         // TODO add your handling code here:
+        int index = tableDSSinhVien.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) tableDSSinhVien.getModel();
+        if (index != -1) {
+            String maSV = (String) model.getValueAt(index, 1);
+//            String hoTen = (String)model.getValueAt(index, 2);
+//            String khoa = (String)model.getValueAt(index, 3);
+//            String lop = (String)model.getValueAt(index, 4);
+//            String password = (String)model.getValueAt(index, 5);
+//            String email = (String)model.getValueAt(index, 6);
+//            String status = (String)model.getValueAt(index, 7);
+//            String check = (String)model.getValueAt(index, 8);
+            new RepairInforUser(maSV).setVisible(true);
+            this.setVisible(false);
+        } else {
+            noti.showNotiError("Vui lòng chọn thành viên muốn thay đổi thông tin");
+        }
     }//GEN-LAST:event_btnRepairActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -190,6 +207,36 @@ public class QLSinhVien extends javax.swing.JFrame {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
+        int index = tableDSSinhVien.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) tableDSSinhVien.getModel();
+        if (index != -1) {
+            try {
+                String maSV = (String) model.getValueAt(index, 1);
+                boolean kt = userController.removeUser(maSV);
+                if (kt) {
+                    noti.showNotiInformation("Xóa thành viên " + maSV + " thành công");
+                    model = (DefaultTableModel)tableDSSinhVien.getModel();
+                    try {
+                        listUser = userController.getListUsers();
+                    } catch (IOException e) {
+                        noti.showNotiError("Có lỗi: " + e.toString());
+                    }
+                    // Xóa hết dữ liệu của DefaultTableModel ghi lại (Xóa các row)
+                    model.setRowCount(0);
+                    
+                    // Ghi lại dữ liệu có ID đã được cập nhật
+                    for (User user : listUser) {
+                        Object[] row = {user.getId(), user.getMaSV(), user.getFullName(), user.getKhoa(), user.getLop(), user.getPassword(), user.getEmail(), userController.getStatus(user.getStatus()), userController.getCheck(user.getCheck())};
+                        model.addRow(row);
+                    }
+                    model.fireTableDataChanged();
+                }
+            } catch (IOException e) {
+                noti.showNotiError("Có lỗi: " + e.toString());
+            }
+        } else {
+            noti.showNotiError("Vui lòng chọn thành viên muốn thay đổi thông tin");
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     /**

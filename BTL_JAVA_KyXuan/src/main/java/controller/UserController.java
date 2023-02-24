@@ -7,6 +7,7 @@ package controller;
 import common.Constant;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,6 +87,17 @@ public class UserController {
         return cur_user;
     }
 
+    public User getUse(String maSV) throws IOException {
+        List<User> users = readUsersFromFile(Constant.USER_FILE);
+        User cur_user = new User();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getMaSV().equals(maSV)) {
+                cur_user = users.get(i);
+            }
+        }
+        return cur_user;
+    }
+
     public boolean repairInformatin(String maSV, String tenSV, String khoa, String lop, String password, String email, int status) throws IOException {
         List<User> users = readUsersFromFile("User.DAT");
         User cur_user = new User();
@@ -105,6 +117,31 @@ public class UserController {
             cur_user.setStatus(status);
             writeUsersToFile(users, "User.DAT");
             System.out.println(status);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean repairInformatin(String maSV, String tenSV, String khoa, String lop, String password, String email, int status, int checks, long idRole) throws IOException {
+        List<User> users = readUsersFromFile("User.DAT");
+        User cur_user = new User();
+        int check = -1;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getMaSV().equalsIgnoreCase(maSV)) {
+                cur_user = users.get(i);
+                check = 1;
+            }
+        }
+        if (check == 1) {
+            cur_user.setFullName(tenSV);
+            cur_user.setKhoa(khoa);
+            cur_user.setLop(lop);
+            cur_user.setPassword(password);
+            cur_user.setEmail(email);
+            cur_user.setStatus(status);
+            cur_user.setCheck(checks);
+            cur_user.setIdRole(idRole);
+            writeUsersToFile(users, "User.DAT");
             return true;
         }
         return false;
@@ -153,16 +190,32 @@ public class UserController {
     public boolean addUser(String maSV, String hoTen, String khoa, String lop, String password, String email, int status, int check, long idRole) throws IOException {
         List<User> users = readUsersFromFile(Constant.USER_FILE);
         for (User u : users) {
-            if (!u.getMaSV().equalsIgnoreCase(maSV)) {
-                long id = users.size() + 1;
-                long idEvent = 0;
-                User newUser = new User(id, maSV,hoTen, khoa, lop, password, email, status, check, idRole, idEvent);
-                System.out.println(newUser.toString());
-                users.add(newUser);
-                writeUsersToFile(users, Constant.USER_FILE);
-                return true;
+            if (u.getMaSV().equalsIgnoreCase(maSV)) {
+                return false;
             }
         }
-        return false;
+        long id = users.size() + 1;
+        long idEvent = 0;
+        User newUser = new User(id, maSV, hoTen, khoa, lop, password, email, status, check, idRole, idEvent);
+        System.out.println(newUser.toString());
+        users.add(newUser);
+        writeUsersToFile(users, Constant.USER_FILE);
+        return true;
+    }
+    
+    public boolean removeUser(String maSV) throws IOException{
+        List<User> users = readUsersFromFile(Constant.USER_FILE);
+        Iterator<User>iterator = users.iterator();
+        while(iterator.hasNext()){
+            User user = iterator.next();
+            if(user.getMaSV().equalsIgnoreCase(maSV)){
+                iterator.remove();
+            }
+        }
+        for(int i = 0 ;i < users.size();i++){
+            users.get(i).setId((long)i);
+        }
+        writeUsersToFile(users, Constant.USER_FILE);
+        return true;
     }
 }
