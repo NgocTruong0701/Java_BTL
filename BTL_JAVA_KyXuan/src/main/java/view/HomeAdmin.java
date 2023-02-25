@@ -131,7 +131,7 @@ public class HomeAdmin extends javax.swing.JFrame {
 
     private void btnQuanLySVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLySVActionPerformed
         // TODO add your handling code here:
-        new QLSinhVien().setVisible(true);
+        new QLSinhVien(maSV, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnQuanLySVActionPerformed
 

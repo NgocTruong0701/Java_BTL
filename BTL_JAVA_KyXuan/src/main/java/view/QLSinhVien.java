@@ -17,19 +17,33 @@ import model.User;
  * @author Lê Ngọc Trường
  */
 public class QLSinhVien extends javax.swing.JFrame {
-
+    // Tạo 1 User Controller để thao tác với dữ liệu User
     UserController userController = new UserController();
+    // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
     Noti noti = new Noti(this);
+    // Lưu thông tin danh sách User
     ArrayList<User> listUser;
+    // 2 biến lưu mã sinh viên của admin và password admin sau khi thoát hiển thị lại
+    private String maSVAdmin;
+    private String passwordAdmin;
 
     /**
      * Creates new form QLSinhVien
      */
-    public QLSinhVien() {
+    public QLSinhVien(){
+       initComponents();
+        panelDanhSach.setBorder(new TitledBorder("Danh sách thành viên"));
+        panelButton.setBorder(new TitledBorder("Chức năng"));
+        pack(); 
+    }
+    
+    public QLSinhVien(String maSV, String password) {
         initComponents();
         panelDanhSach.setBorder(new TitledBorder("Danh sách thành viên"));
         panelButton.setBorder(new TitledBorder("Chức năng"));
         pack();
+        this.maSVAdmin = maSV;
+        this.passwordAdmin = password;
     }
 
     /**
@@ -75,6 +89,7 @@ public class QLSinhVien extends javax.swing.JFrame {
         btnRepair = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
+        btnOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý thành viên");
@@ -90,7 +105,7 @@ public class QLSinhVien extends javax.swing.JFrame {
             .addGroup(panelDanhSachLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1045, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelDanhSachLayout.setVerticalGroup(
             panelDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,6 +144,16 @@ public class QLSinhVien extends javax.swing.JFrame {
             }
         });
 
+        btnOut.setBackground(new java.awt.Color(51, 0, 102));
+        btnOut.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnOut.setForeground(new java.awt.Color(255, 255, 255));
+        btnOut.setText("Thoát");
+        btnOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelButtonLayout = new javax.swing.GroupLayout(panelButton);
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
@@ -136,11 +161,13 @@ public class QLSinhVien extends javax.swing.JFrame {
             .addGroup(panelButtonLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(158, 158, 158)
+                .addGap(51, 51, 51)
                 .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                .addGap(66, 66, 66)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56))
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +176,8 @@ public class QLSinhVien extends javax.swing.JFrame {
                 .addGroup(panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -160,7 +188,7 @@ public class QLSinhVien extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelDanhSach, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(506, 506, 506))
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -239,6 +267,12 @@ public class QLSinhVien extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
+    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
+        // TODO add your handling code here:
+        new HomeAdmin(maSVAdmin, passwordAdmin).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnOutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -276,6 +310,7 @@ public class QLSinhVien extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnRepair;
     private javax.swing.JScrollPane jScrollPane1;
