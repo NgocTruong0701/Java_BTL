@@ -15,8 +15,8 @@ import java.util.List;
 public class Event {
     private Long id;
     private String nameEvent;
-    private Date startDay;
-    private Date endDay;
+    private String startDay;
+    private String endDay;
     private Integer numberOfStudent;
     private String address;
     private List<OperatingFee> operatingFees = new ArrayList<>();
@@ -25,7 +25,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(Long id, String nameEvent, Date startDay, Date endDay, Integer numberOfStudent, String address) {
+    public Event(Long id, String nameEvent, String startDay, String endDay, Integer numberOfStudent, String address) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.startDay = startDay;
@@ -50,22 +50,23 @@ public class Event {
         this.nameEvent = nameEvent;
     }
 
-    public Date getStartDay() {
+    public String getStartDay() {
         return startDay;
     }
 
-    public void setStartDay(Date startDay) {
-        this.startDay = startDay;
-    }
-
-    public Date getEndDay() {
+    public String getEndDay() {
         return endDay;
     }
 
-    public void setEndDay(Date endDay) {
+    public void setStartDay(String startDay) {
+        this.startDay = startDay;
+    }
+
+    public void setEndDay(String endDay) {
         this.endDay = endDay;
     }
 
+    
     public Integer getNumberOfStudent() {
         return numberOfStudent;
     }
@@ -98,7 +99,10 @@ public class Event {
         this.users = users;
     }
     
-    
+    // phương thức thêm các khoản phí 
+    public void addFees(OperatingFee fee){
+        operatingFees.add(fee);
+    }
     
     
 }

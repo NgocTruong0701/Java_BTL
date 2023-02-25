@@ -58,6 +58,4 @@ public class OperatingFee {
         this.idEvent = idEvent;
     }
     
-    
-    
 }

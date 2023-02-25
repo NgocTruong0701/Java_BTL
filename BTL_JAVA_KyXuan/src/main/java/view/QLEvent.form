@@ -24,18 +24,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                      <Component id="panelDanhSachEvent" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                      <Component id="panelButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <Component id="panelDanhSachEvent" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="16" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="panelButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -44,15 +41,22 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelDanhSachEvent" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="panelButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="panelDanhSachEvent">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Danh s&#xe1;ch s&#x1ef1; ki&#x1ec7;n"/>
+          </Border>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="panelDanhSachEvent.setBorder(new TitledBorder(&quot;Danh s&#xe1;ch s&#x1ef1; ki&#x1ec7;n&quot;));"/>
       </AuxValues>
@@ -62,8 +66,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="820" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="1067" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -85,7 +89,7 @@
             <Component class="javax.swing.JTable" name="tableEvent">
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(model)"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="// Tao DefaultTableModel va them row tieu de, va row thong tin Event&#xa;        DefaultTableModel model = new DefaultTableModel(){&#xa;           @Override&#xa;            public boolean isCellEditable(int row, int column) {&#xa;                // ch&#x1ec9; &#x111;&#x1b0;&#x1ee3;c xem, kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c s&#x1eed;a row and column n&#xe0;o h&#x1ebf;t&#xa;                return false;&#xa;            } &#xa;        };&#xa;        model.addColumn(&quot;T&#xea;n s&#x1ef1; ki&#x1ec7;n&quot;);&#xa;        model.addColumn(&quot;Ng&#xe0;y b&#x1eaf;t &#x111;&#x1ea7;u&quot;);&#xa;        model.addColumn(&quot;Ng&#xe0;y k&#x1ebf;t th&#xfa;c&quot;);&#xa;        model.addColumn(&quot;S&#x1ed1; l&#x1b0;&#x1ee3;ng th&#xe0;nh vi&#xea;n c&#x1ea7;n&quot;);&#xa;        model.addColumn(&quot;S&#x1ed1; l&#x1b0;&#x1ee3;ng th&#xe0;nh vi&#xea;n thi&#x1ebf;u&quot;);&#xa;        model.addColumn(&quot;&#x110;&#x1ecb;a ch&#x1ec9;&quot;);&#xa;        model.addColumn(&quot;T&#x1ed5;ng chi ph&#xed;&quot;);"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="// Tao DefaultTableModel va them row tieu de, va row thong tin Event&#xa;        DefaultTableModel model = new DefaultTableModel(){&#xa;           @Override&#xa;public boolean isCellEditable(int row, int column) {&#xa;                // ch&#x1ec9; &#x111;&#x1b0;&#x1ee3;c xem, kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c s&#x1eed;a row and column n&#xe0;o h&#x1ebf;t&#xa;                return false;&#xa;            } &#xa;        };&#xa;        model.addColumn(&quot;ID&quot;);&#xa;        model.addColumn(&quot;T&#xea;n s&#x1ef1; ki&#x1ec7;n&quot;);&#xa;        model.addColumn(&quot;Ng&#xe0;y b&#x1eaf;t &#x111;&#x1ea7;u&quot;);&#xa;        model.addColumn(&quot;Ng&#xe0;y k&#x1ebf;t th&#xfa;c&quot;);&#xa;        model.addColumn(&quot;S&#x1ed1; l&#x1b0;&#x1ee3;ng th&#xe0;nh vi&#xea;n c&#x1ea7;n&quot;);&#xa;        model.addColumn(&quot;S&#x1ed1; l&#x1b0;&#x1ee3;ng th&#xe0;nh vi&#xea;n thi&#x1ebf;u&quot;);&#xa;        model.addColumn(&quot;&#x110;&#x1ecb;a ch&#x1ec9;&quot;);&#xa;        model.addColumn(&quot;T&#x1ed5;ng chi ph&#xed;&quot;);&#xa;        try{&#xa;            listEvent = eventController.getListEvents();&#xa;        }catch(IOException e){&#xa;            noti.showNotiError(&quot;C&#xf3; l&#x1ed7;i: &quot; + e.toString());&#xa;        }&#xa;        catch(Exception e2){&#xa;            noti.showNotiError(&quot;C&#xf3; l&#x1ed7;i: &quot; + e2.toString());&#xa;        }&#xa;        &#xa;        // get c&#xe1;c chi ph&#xed; ho&#x1ea1;t &#x111;&#x1ed9;ng c&#xf3; c&#xf9;ng IdEvent v&#xe0; &#x111;&#x1b0;a v&#xe0;o ListOperatingFee c&#x1ee7;a Evend c&#xf3; IdEvent &#x111;&#xf3;&#xa;        for(Event e : listEvent){&#xa;            try{&#xa;                eventController.setListOperatingFee(e); &#xa;            }&#xa;            catch(IOException e1){&#xa;                noti.showNotiError(&quot;C&#xf3; l&#x1ed7;i: &quot; + e1.toString());&#xa;            }&#xa;        }&#xa;        &#xa;        for(Event e : listEvent){&#xa;            long costTotal = eventController.getCostTotal(e);&#xa;            &#xa;            Object[] row = {e.getId(), e.getNameEvent(), e.getStartDay(), e.getEndDay(), e.getNumberOfStudent(),e.getNumberOfStudent() - e.getUsers().size(),e.getAddress(), costTotal};&#xa;            model.addRow(row);&#xa;        }"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -93,6 +97,17 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="panelButton">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder>
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                <TitledBorder title="Ch&#x1ee9;c n&#x103;ng"/>
+              </Border>
+            </TitledBorder>
+          </Border>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="panelButton.setBorder(new TitledBorder(&quot;Ch&#x1ee9;c n&#x103;ng&quot;));"/>
       </AuxValues>
@@ -100,15 +115,88 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="739" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <Component id="btnAdd1" min="-2" pref="178" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                  <Component id="btnRepair" min="-2" pref="203" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btnRemove" min="-2" pref="156" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                  <Component id="btnFeeManager" min="-2" pref="156" max="-2" attributes="0"/>
+                  <EmptySpace pref="64" max="32767" attributes="0"/>
+                  <Component id="btnExist" min="-2" pref="90" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="80" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnAdd1" alignment="3" max="32767" attributes="0"/>
+                      <Component id="btnExist" alignment="3" max="32767" attributes="0"/>
+                      <Component id="btnFeeManager" alignment="3" max="32767" attributes="0"/>
+                      <Component id="btnRepair" alignment="3" max="32767" attributes="0"/>
+                      <Component id="btnRemove" alignment="3" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="btnExist">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExistActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnAdd1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Th&#xea;m s&#x1ef1; ki&#x1ec7;n"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdd1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnRepair">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="S&#x1eed;a th&#xf4;ng tin s&#x1ef1; ki&#x1ec7;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnFeeManager">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; chi ph&#xed;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFeeManagerActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnRemove">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="X&#xf3;a s&#x1ef1; ki&#x1ec7;n"/>
+          </Properties>
+        </Component>
+      </SubComponents>
     </Container>
   </SubComponents>
 </Form>

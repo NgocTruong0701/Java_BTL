@@ -95,6 +95,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; s&#x1ef1; ki&#x1ec7;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnQuanLySuKienActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnQuanLySV">
       <Properties>

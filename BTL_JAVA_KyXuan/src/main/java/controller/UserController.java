@@ -146,7 +146,8 @@ public class UserController {
         }
         return false;
     }
-
+    
+    // Get ra list User trong File User
     public ArrayList<User> getListUsers() throws IOException {
         ArrayList<User> users = (ArrayList< User>) readUsersFromFile(Constant.USER_FILE);
         return users;

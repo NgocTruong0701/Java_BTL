@@ -4,8 +4,13 @@
  */
 package view;
 
+import controller.EventController;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import model.Event;
+import model.Noti;
 
 /**
  *
@@ -13,11 +18,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class QLEvent extends javax.swing.JFrame {
 
+    // Tạo 1 đối tượng EventController để có thể thao tác với dữ liệu Event
+    EventController eventController = new EventController();
+    // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
+    Noti noti = new Noti(this);
+    // Lưu thông tin danh sách Event
+    ArrayList<Event> listEvent;
+    // 2 biến lưu thông tin admin
+    private String maSV;
+    private String password;
     /**
      * Creates new form QLEvent
      */
-    public QLEvent() {
+    public QLEvent(){
         initComponents();
+        pack();
+    }
+    public QLEvent(String masv, String password) {
+        initComponents();
+        pack();
+        this.maSV = masv;
+        this.password = password;
     }
 
     /**
@@ -39,6 +60,7 @@ public class QLEvent extends javax.swing.JFrame {
                 return false;
             }
         };
+        model.addColumn("ID");
         model.addColumn("Tên sự kiện");
         model.addColumn("Ngày bắt đầu");
         model.addColumn("Ngày kết thúc");
@@ -46,11 +68,43 @@ public class QLEvent extends javax.swing.JFrame {
         model.addColumn("Số lượng thành viên thiếu");
         model.addColumn("Địa chỉ");
         model.addColumn("Tổng chi phí");
+        try{
+            listEvent = eventController.getListEvents();
+        }catch(IOException e){
+            noti.showNotiError("Có lỗi: " + e.toString());
+        }
+        catch(Exception e2){
+            noti.showNotiError("Có lỗi: " + e2.toString());
+        }
+
+        // get các chi phí hoạt động có cùng IdEvent và đưa vào ListOperatingFee của Evend có IdEvent đó
+        for(Event e : listEvent){
+            try{
+                eventController.setListOperatingFee(e);
+            }
+            catch(IOException e1){
+                noti.showNotiError("Có lỗi: " + e1.toString());
+            }
+        }
+
+        for(Event e : listEvent){
+            long costTotal = eventController.getCostTotal(e);
+
+            Object[] row = {e.getId(), e.getNameEvent(), e.getStartDay(), e.getEndDay(), e.getNumberOfStudent(),e.getNumberOfStudent() - e.getUsers().size(),e.getAddress(), costTotal};
+            model.addRow(row);
+        }
         tableEvent = new javax.swing.JTable(model);
         panelButton = new javax.swing.JPanel();
+        btnExist = new javax.swing.JButton();
+        btnAdd1 = new javax.swing.JButton();
+        btnRepair = new javax.swing.JButton();
+        btnFeeManager = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý sự kiện");
+
+        panelDanhSachEvent.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách sự kiện"));
 
         jScrollPane1.setViewportView(tableEvent);
 
@@ -60,8 +114,8 @@ public class QLEvent extends javax.swing.JFrame {
             panelDanhSachEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDanhSachEventLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelDanhSachEventLayout.setVerticalGroup(
             panelDanhSachEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,15 +125,66 @@ public class QLEvent extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        panelButton.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng")));
+
+        btnExist.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnExist.setText("Thoát");
+        btnExist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExistActionPerformed(evt);
+            }
+        });
+
+        btnAdd1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnAdd1.setText("Thêm sự kiện");
+        btnAdd1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdd1ActionPerformed(evt);
+            }
+        });
+
+        btnRepair.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnRepair.setText("Sửa thông tin sự kiện");
+
+        btnFeeManager.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnFeeManager.setText("Quản lý chi phí");
+        btnFeeManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFeeManagerActionPerformed(evt);
+            }
+        });
+
+        btnRemove.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnRemove.setText("Xóa sự kiện");
+
         javax.swing.GroupLayout panelButtonLayout = new javax.swing.GroupLayout(panelButton);
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 739, Short.MAX_VALUE)
+            .addGroup(panelButtonLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(btnFeeManager, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(btnExist, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+            .addGroup(panelButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFeeManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRepair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -87,23 +192,22 @@ public class QLEvent extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(panelDanhSachEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addComponent(panelDanhSachEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelDanhSachEvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelDanhSachEvent.setBorder(new TitledBorder("Danh sách sự kiện"));
@@ -111,6 +215,22 @@ public class QLEvent extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExistActionPerformed
+        // TODO add your handling code here:
+        new HomeAdmin(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnExistActionPerformed
+
+    private void btnAdd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAdd1ActionPerformed
+
+    private void btnFeeManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFeeManagerActionPerformed
+        // TODO add your handling code here:
+        new QLOperationFee(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnFeeManagerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,6 +268,11 @@ public class QLEvent extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd1;
+    private javax.swing.JButton btnExist;
+    private javax.swing.JButton btnFeeManager;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnRepair;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelButton;
     private javax.swing.JPanel panelDanhSachEvent;

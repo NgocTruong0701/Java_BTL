@@ -74,6 +74,11 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         btnQuanLySuKien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnQuanLySuKien.setText("Quản lý sự kiện");
+        btnQuanLySuKien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuanLySuKienActionPerformed(evt);
+            }
+        });
 
         btnQuanLySV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnQuanLySV.setText("Quản lý thành viên");
@@ -134,6 +139,12 @@ public class HomeAdmin extends javax.swing.JFrame {
         new QLSinhVien(maSV, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnQuanLySVActionPerformed
+
+    private void btnQuanLySuKienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLySuKienActionPerformed
+        // TODO add your handling code here:
+        new QLEvent(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnQuanLySuKienActionPerformed
 
     /**
      * @param args the command line arguments
