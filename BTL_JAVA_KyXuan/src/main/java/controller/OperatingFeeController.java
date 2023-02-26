@@ -32,7 +32,7 @@ public class OperatingFeeController {
         this.fileController = filecontroller;
     }
     
-    // Phương thức get Fee từ File 
+    // Phương thức get Fees từ File 
     public List<OperatingFee> readOperatingFeeFromFile(String fileName) throws IOException{
         fileController.OpenFileToRead(fileName);
         List<OperatingFee> listFee = new ArrayList<OperatingFee>();
@@ -86,5 +86,37 @@ public class OperatingFeeController {
         // ghi vao file
         writeOperatingFeeToFile(listOperatingFee, Constant.OPERATINGFEE_FILE);
         return true;
+    }
+    
+    public OperatingFee getOperatingFee(long idOF) throws Exception{
+        ArrayList<OperatingFee> listOFs = getListCost();
+        for(OperatingFee of : listOFs){
+            if(of.getId() == idOF){
+                return of;
+            }
+        }
+        return null;
+    }
+    
+    public boolean repairOperatingFee(long iDOF, String nameCost, long cost, String nameEvent) throws Exception{
+        ArrayList<OperatingFee> listOperatingFee = getListCost();
+        ArrayList<Event> listEvent = eventController.getListEvents();
+        long idEvent = -1;
+        for(Event e : listEvent){
+            if(e.getNameEvent().equalsIgnoreCase(nameEvent)){
+                idEvent = e.getId();
+            }
+        }
+        for(OperatingFee fee : listOperatingFee){
+            if(fee.getId() == iDOF){
+                fee.setNameFee(nameCost);
+                fee.setMoney(cost);
+                fee.setIdEvent(idEvent);
+                writeOperatingFeeToFile(listOperatingFee, Constant.OPERATINGFEE_FILE);
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

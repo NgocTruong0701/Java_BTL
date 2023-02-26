@@ -213,7 +213,9 @@ public class QLSinhVien extends javax.swing.JFrame {
 
     private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
         // TODO add your handling code here:
+        // Lấy index của người dùng chọn dòng nào trong bảng.
         int index = tableDSSinhVien.getSelectedRow();
+        // Lấy ra model của bảng đang dùng
         DefaultTableModel model = (DefaultTableModel) tableDSSinhVien.getModel();
         if (index != -1) {
             String maSV = (String) model.getValueAt(index, 1);

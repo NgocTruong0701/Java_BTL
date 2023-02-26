@@ -99,7 +99,6 @@ public class QLEvent extends javax.swing.JFrame {
         btnAdd1 = new javax.swing.JButton();
         btnRepair = new javax.swing.JButton();
         btnFeeManager = new javax.swing.JButton();
-        btnRemove = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý sự kiện");
@@ -145,6 +144,11 @@ public class QLEvent extends javax.swing.JFrame {
 
         btnRepair.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         btnRepair.setText("Sửa thông tin sự kiện");
+        btnRepair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRepairActionPerformed(evt);
+            }
+        });
 
         btnFeeManager.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         btnFeeManager.setText("Quản lý chi phí");
@@ -154,25 +158,20 @@ public class QLEvent extends javax.swing.JFrame {
             }
         });
 
-        btnRemove.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        btnRemove.setText("Xóa sự kiện");
-
         javax.swing.GroupLayout panelButtonLayout = new javax.swing.GroupLayout(panelButton);
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelButtonLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(37, 37, 37)
                 .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(98, 98, 98)
                 .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(btnFeeManager, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                .addComponent(btnExist, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                .addComponent(btnFeeManager, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86)
+                .addComponent(btnExist, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,8 +181,7 @@ public class QLEvent extends javax.swing.JFrame {
                     .addComponent(btnAdd1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnFeeManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRepair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRepair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -232,6 +230,10 @@ public class QLEvent extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnFeeManagerActionPerformed
 
+    private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRepairActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -271,7 +273,6 @@ public class QLEvent extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd1;
     private javax.swing.JButton btnExist;
     private javax.swing.JButton btnFeeManager;
-    private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnRepair;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelButton;

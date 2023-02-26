@@ -138,6 +138,11 @@ public class QLOperationFee extends javax.swing.JFrame {
 
         btnRepair.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         btnRepair.setText("Sửa chi phí");
+        btnRepair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRepairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,6 +206,23 @@ public class QLOperationFee extends javax.swing.JFrame {
         new QLEvent(maSV, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnExistActionPerformed
+
+    private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
+        // TODO add your handling code here
+        // Lấy index khi người dùng muốn sửa khoản phí nào trong bảng
+        int index = tableOperatingFee.getSelectedRow();
+        // Lấy ra model của bảng đang dùng
+        DefaultTableModel dmodel = (DefaultTableModel) tableOperatingFee.getModel();
+        if(index != -1){
+            // Lấy ra id của khoản phí đấy
+            long iDOF = (long) dmodel.getValueAt(index, 0);
+            new RepairOperatingFee(maSV, password,iDOF).setVisible(true);
+            this.setVisible(false);
+        }
+        else{
+            noti.showNotiInformation("Vui lòng chọn khoản phí cần sửa");
+        }
+    }//GEN-LAST:event_btnRepairActionPerformed
 
     /**
      * @param args the command line arguments

@@ -116,17 +116,15 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="btnAdd1" min="-2" pref="178" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                   <Component id="btnRepair" min="-2" pref="203" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                  <Component id="btnRemove" min="-2" pref="156" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                  <Component id="btnFeeManager" min="-2" pref="156" max="-2" attributes="0"/>
-                  <EmptySpace pref="64" max="32767" attributes="0"/>
-                  <Component id="btnExist" min="-2" pref="90" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <EmptySpace pref="105" max="32767" attributes="0"/>
+                  <Component id="btnFeeManager" min="-2" pref="172" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                  <Component id="btnExist" min="-2" pref="122" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -139,7 +137,6 @@
                       <Component id="btnExist" alignment="3" max="32767" attributes="0"/>
                       <Component id="btnFeeManager" alignment="3" max="32767" attributes="0"/>
                       <Component id="btnRepair" alignment="3" max="32767" attributes="0"/>
-                      <Component id="btnRemove" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -176,6 +173,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="S&#x1eed;a th&#xf4;ng tin s&#x1ef1; ki&#x1ec7;n"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRepairActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnFeeManager">
           <Properties>
@@ -187,14 +187,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFeeManagerActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnRemove">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="3"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="X&#xf3;a s&#x1ef1; ki&#x1ec7;n"/>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

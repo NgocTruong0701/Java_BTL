@@ -16,7 +16,7 @@ import model.OperatingFee;
  *
  * @author Lê Ngọc Trường
  */
-public class AddOperatingFee extends javax.swing.JFrame {
+public class RepairOperatingFee extends javax.swing.JFrame {
 
     // Tạo 1 đối tượng OperatingFeeController để có thể thao tác với dữ liệu OperatingFee
     OperatingFeeController operatingFeeController = new OperatingFeeController();
@@ -24,43 +24,47 @@ public class AddOperatingFee extends javax.swing.JFrame {
     EventController eventController = new EventController();
     // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
     Noti noti = new Noti(this);
-    // Tạo 1 đối tượng OperatingFee để lưu dữ liệu
+    // Tạo 1 đối tượng OperatingFee để lưu dữ liệu và hiển thị ra màn hình khoản phí đó
     OperatingFee model = new OperatingFee();
     // 2 biến lưu thông tin admin
     private String maSV;
     private String password;
-
+    // 1 biến lưu thông tin của Id khoản phí đấy được chọn từ JTable ở QLOperatingFee
+    private long idOF;
+    
     // DefaultComboBoxModel để đổ dữ liệu Event vào combobox
-    DefaultComboBoxModel<String> cboModel = new DefaultComboBoxModel<>();
-
+    DefaultComboBoxModel<String>cboModel = new DefaultComboBoxModel<>();
+    
     // methods lấy ra event va add vào DefaultComboBoxModel
     private void addEventToComboBoxModel() {
         ArrayList<Event> listEvent = new ArrayList<>();
-        try {
+        try{
             listEvent = eventController.getListEvents();
-        } catch (Exception e) {
+        }catch(Exception e){
             noti.showNotiError("Có lỗi: " + e.toString());
         }
-        for (Event event : listEvent) {
+        for(Event event : listEvent){
             cboModel.addElement(event.getNameEvent());
         }
     }
-
     /**
      * Creates new form AddOperatingFee
      */
-    public AddOperatingFee() {
+    
+    public RepairOperatingFee() {
         initComponents();
         addEventToComboBoxModel();
         cboEvent.setModel(cboModel);
     }
 
-    public AddOperatingFee(String masv, String password) {
+    public RepairOperatingFee(String masv, String password, long idOF) {
         initComponents();
         this.maSV = masv;
         this.password = password;
+        this.idOF = idOF;
         addEventToComboBoxModel();
         cboEvent.setModel(cboModel);
+        showInfor();
     }
 
     /**
@@ -79,7 +83,7 @@ public class AddOperatingFee extends javax.swing.JFrame {
         txtCost = new javax.swing.JTextField();
         cboEvent = new javax.swing.JComboBox<>();
         btnExist = new javax.swing.JButton();
-        btnAdd = new javax.swing.JButton();
+        btnRepair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm khoản phí");
@@ -103,11 +107,11 @@ public class AddOperatingFee extends javax.swing.JFrame {
             }
         });
 
-        btnAdd.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        btnAdd.setText("Thêm");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnRepair.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnRepair.setText("Sửa");
+        btnRepair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnRepairActionPerformed(evt);
             }
         });
 
@@ -139,7 +143,7 @@ public class AddOperatingFee extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(191, 191, 191)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(373, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -163,41 +167,58 @@ public class AddOperatingFee extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(196, Short.MAX_VALUE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(35, 35, 35)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-        String nameCost = txtName.getText().trim();
-        long cost = 0;
-        String nameEvent = (String) cboEvent.getSelectedItem();
-
-        if (!nameCost.isEmpty()) {
-            try {
-                cost = Long.parseLong(txtCost.getText() + "");
-                // gọi add của controller để add
-                try {
-                    if (operatingFeeController.addOperatingFee(nameCost, cost, nameEvent)) {
-                        noti.showNotiInformation("Thêm khoản phí thành công!!");
-                        txtCost.setText("");
-                        txtName.setText("");
-                        txtName.requestFocus();
-                        cboEvent.setSelectedIndex(0);
-                    }
-                } catch (Exception e) {
-                    noti.showNotiError("Thêm khoản phí không thành công. Lỗi " + e.toString());
-                }
-            } catch (Exception e) {
-                noti.showNotiError("Chi phí không hợp lệ.");
-            }
-        } else {
-            noti.showNotiError("Tên khoản phí không được để trống!!");
+    private void showInfor(){
+        // lấy operating fee thông qua controller
+        try{
+            model = operatingFeeController.getOperatingFee(idOF);
+        }catch(Exception e){
+            noti.showNotiError("Có lỗi: " + e.toString());
         }
-    }//GEN-LAST:event_btnAddActionPerformed
+        // Hiển thị lên màn hình thông tin của khoản phí
+        if(model != null){
+            txtName.setText(model.getNameFee());
+            txtCost.setText(model.getMoney()+"");
+            long idEvent = model.getIdEvent();
+            cboEvent.setSelectedIndex(((int)idEvent)-1);
+        }
+        else{
+            noti.showNotiError("Có lỗi: không có khoản phí nào được tìm thấy trong database");
+        }
+    }
+    
+    private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
+        // TODO add your handling code here:
+        // Lấy tất cả thông tin trên màn hình 
+        String nameCost = txtName.getText().trim();
+        long cost = -1;
+        try{
+            cost = Long.parseLong(txtCost.getText()+"");
+        }catch(Exception e){
+            noti.showNotiError("Kinh phí không hợp lệ!!");
+        }
+        String nameEvent = (String)cboEvent.getSelectedItem();
+        
+        // gọi phương thức sửa của  OperatingFeeController
+        try{
+            if(operatingFeeController.repairOperatingFee(idOF, nameCost, cost, nameEvent)){
+                noti.showNotiInformation("Thay đổi thông tin chi phí thành công");
+                new QLOperationFee(maSV, password).setVisible(true);
+                this.setVisible(false);
+            }
+            else{
+                noti.showNotiError("Không tìm thấy khoản chi phí này");
+            }
+        }catch(Exception e){
+            noti.showNotiError("Có lỗi: " + e.toString());
+        }
+    }//GEN-LAST:event_btnRepairActionPerformed
 
     private void btnExistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExistActionPerformed
         // TODO add your handling code here:
@@ -241,8 +262,8 @@ public class AddOperatingFee extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnExist;
+    private javax.swing.JButton btnRepair;
     private javax.swing.JComboBox<String> cboEvent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
