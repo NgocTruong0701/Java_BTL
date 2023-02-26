@@ -18,7 +18,7 @@ public class User {
     private String email;
     private Integer status; // 0 là rảnh, 1 là bận, 2 là đã được chọn đi sự kiện
     private Integer check; // 1 là thành viên của đội, 0 là sinh viên bình thường
-    private Long idRole; 
+    private Long idRole; // 1 là người dùng, 2 là admin
     private Long idEvent;
 
     public User() {

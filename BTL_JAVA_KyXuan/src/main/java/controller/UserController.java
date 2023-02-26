@@ -73,7 +73,7 @@ public class UserController {
             }
         }
 
-        return 0l;
+        return (long)-1;
     }
 
     public User getUse(String maSV, String password) throws IOException {
@@ -204,6 +204,24 @@ public class UserController {
         return true;
     }
     
+    public boolean addUser(String maSV, String hoTen, String khoa, String lop, String password, String email) throws IOException{
+        ArrayList<User> listUsers = getListUsers();
+        for (User u : listUsers) {
+            if (u.getMaSV().equalsIgnoreCase(maSV)) {
+                return false;
+            }
+        }
+        long id = listUsers.size() + 1;
+        long idEvent = 0;
+        long idRole = 1;
+        int status = 0;
+        int check = 0;
+        User newUser = new User(id, maSV, hoTen , khoa, lop, password, email, status, check, idRole, idEvent);
+        listUsers.add(newUser);
+        writeUsersToFile(listUsers, Constant.USER_FILE);
+        return true;
+    }
+    
     public boolean removeUser(String maSV) throws IOException{
         List<User> users = readUsersFromFile(Constant.USER_FILE);
         Iterator<User>iterator = users.iterator();
@@ -219,4 +237,5 @@ public class UserController {
         writeUsersToFile(users, Constant.USER_FILE);
         return true;
     }
+    
 }

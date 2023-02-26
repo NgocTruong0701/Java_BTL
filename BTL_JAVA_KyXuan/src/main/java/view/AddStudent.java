@@ -23,11 +23,20 @@ public class AddStudent extends javax.swing.JFrame {
     private UserController control = new UserController();
     // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
     private Noti noti = new Noti(this);
+    // 2 biến lưu mã sinh viên của admin và password admin sau khi thoát hiển thị lại
+    private String maSVAdmin;
+    private String passwordAdmin;
 
-    // Phương thức khởi tạo 2 tham số mã sinh viên và password được dùng khi đăng nhập sẽ gửi mã sinh viên và password qua
+    public AddStudent(String masvadmin, String passwordadmin) {
+        initComponents();
+        this.maSVAdmin = masvadmin;
+        this.passwordAdmin = passwordadmin;
+    }
+
     public AddStudent() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -207,12 +216,12 @@ public class AddStudent extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        String maSV = txtMaSV.getText().trim()+"";
-        String hoTenSV = txtHoTen.getText().trim()+"";
-        String khoa = txtKhoa.getText().trim()+"";
-        String lop = txtLop.getText().trim()+"";
-        String password = new String(txtPassword.getPassword()).trim()+"";
-        String email = txtEmail.getText().trim()+"";
+        String maSV = txtMaSV.getText().trim() + "";
+        String hoTenSV = txtHoTen.getText().trim() + "";
+        String khoa = txtKhoa.getText().trim() + "";
+        String lop = txtLop.getText().trim() + "";
+        String password = new String(txtPassword.getPassword()).trim() + "";
+        String email = txtEmail.getText().trim() + "";
 
         int status = -1;
         if (rdoBusy.isSelected()) {
@@ -225,7 +234,7 @@ public class AddStudent extends javax.swing.JFrame {
             status = 0;
         }
 
-        int check = (int)cboThongTin.getSelectedIndex();
+        int check = (int) cboThongTin.getSelectedIndex();
         int idRole = 1;
         // Kiểm tra nhập đủ dữ liệu
         if (maSV.trim().isEmpty() || hoTenSV.trim().isEmpty() || khoa.trim().isEmpty() || lop.trim().isEmpty() || password.trim().isEmpty() || email.trim().isEmpty()) {
@@ -237,7 +246,7 @@ public class AddStudent extends javax.swing.JFrame {
             if (Constant.regexPassword.matcher(password).matches()) {
                 if (Constant.regexEmail.matcher(email).matches()) {
                     try {
-                        boolean kt = control.addUser(maSV, hoTenSV, khoa, lop, password, email, status,check, idRole);
+                        boolean kt = control.addUser(maSV, hoTenSV, khoa, lop, password, email, status, check, idRole);
                         if (kt) {
                             // Hiện thi dialogBox thông tin 
                             new QLSinhVien().setVisible(true);
@@ -263,7 +272,7 @@ public class AddStudent extends javax.swing.JFrame {
 
     private void btnExistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExistActionPerformed
         // TODO add your handling code here:
-        new QLSinhVien().setVisible(true);
+        new QLSinhVien(maSVAdmin, passwordAdmin).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnExistActionPerformed
 

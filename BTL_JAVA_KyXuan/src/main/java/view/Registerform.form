@@ -121,9 +121,6 @@
     <Component class="javax.swing.JTextField" name="khoaField">
     </Component>
     <Component class="javax.swing.JTextField" name="passwordField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="repasswordField">
     </Component>

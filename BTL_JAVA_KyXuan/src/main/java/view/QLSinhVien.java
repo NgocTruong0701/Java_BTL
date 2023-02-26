@@ -7,6 +7,7 @@ package view;
 import controller.UserController;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import model.Noti;
@@ -17,6 +18,7 @@ import model.User;
  * @author Lê Ngọc Trường
  */
 public class QLSinhVien extends javax.swing.JFrame {
+
     // Tạo 1 User Controller để thao tác với dữ liệu User
     UserController userController = new UserController();
     // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
@@ -30,13 +32,13 @@ public class QLSinhVien extends javax.swing.JFrame {
     /**
      * Creates new form QLSinhVien
      */
-    public QLSinhVien(){
-       initComponents();
+    public QLSinhVien() {
+        initComponents();
         panelDanhSach.setBorder(new TitledBorder("Danh sách thành viên"));
         panelButton.setBorder(new TitledBorder("Chức năng"));
-        pack(); 
+        pack();
     }
-    
+
     public QLSinhVien(String maSV, String password) {
         initComponents();
         panelDanhSach.setBorder(new TitledBorder("Danh sách thành viên"));
@@ -226,7 +228,7 @@ public class QLSinhVien extends javax.swing.JFrame {
 //            String email = (String)model.getValueAt(index, 6);
 //            String status = (String)model.getValueAt(index, 7);
 //            String check = (String)model.getValueAt(index, 8);
-            new RepairInforUser(maSV).setVisible(true);
+            new RepairInforUser(maSV, maSVAdmin, passwordAdmin).setVisible(true);
             this.setVisible(false);
         } else {
             noti.showNotiError("Vui lòng chọn thành viên muốn thay đổi thông tin");
@@ -235,7 +237,7 @@ public class QLSinhVien extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        new AddStudent().setVisible(true);
+        new AddStudent(maSVAdmin, passwordAdmin).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -244,29 +246,32 @@ public class QLSinhVien extends javax.swing.JFrame {
         int index = tableDSSinhVien.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableDSSinhVien.getModel();
         if (index != -1) {
-            try {
-                String maSV = (String) model.getValueAt(index, 1);
-                boolean kt = userController.removeUser(maSV);
-                if (kt) {
-                    noti.showNotiInformation("Xóa thành viên " + maSV + " thành công");
-                    model = (DefaultTableModel)tableDSSinhVien.getModel();
-                    try {
-                        listUser = userController.getListUsers();
-                    } catch (IOException e) {
-                        noti.showNotiError("Có lỗi: " + e.toString());
+            int result = noti.showOption("Bạn có chắc chắn xóa thành viên này.", "Xác nhận xóa");
+            if (result == JOptionPane.YES_OPTION) {
+                try {
+                    String maSV = (String) model.getValueAt(index, 1);
+                    boolean kt = userController.removeUser(maSV);
+                    if (kt) {
+                        noti.showNotiInformation("Xóa thành viên " + maSV + " thành công");
+                        model = (DefaultTableModel) tableDSSinhVien.getModel();
+                        try {
+                            listUser = userController.getListUsers();
+                        } catch (IOException e) {
+                            noti.showNotiError("Có lỗi: " + e.toString());
+                        }
+                        // Xóa hết dữ liệu của DefaultTableModel ghi lại (Xóa các row)
+                        model.setRowCount(0);
+
+                        // Ghi lại dữ liệu có ID đã được cập nhật
+                        for (User user : listUser) {
+                            Object[] row = {user.getId(), user.getMaSV(), user.getFullName(), user.getKhoa(), user.getLop(), user.getPassword(), user.getEmail(), userController.getStatus(user.getStatus()), userController.getCheck(user.getCheck())};
+                            model.addRow(row);
+                        }
+                        model.fireTableDataChanged();
                     }
-                    // Xóa hết dữ liệu của DefaultTableModel ghi lại (Xóa các row)
-                    model.setRowCount(0);
-                    
-                    // Ghi lại dữ liệu có ID đã được cập nhật
-                    for (User user : listUser) {
-                        Object[] row = {user.getId(), user.getMaSV(), user.getFullName(), user.getKhoa(), user.getLop(), user.getPassword(), user.getEmail(), userController.getStatus(user.getStatus()), userController.getCheck(user.getCheck())};
-                        model.addRow(row);
-                    }
-                    model.fireTableDataChanged();
+                } catch (IOException e) {
+                    noti.showNotiError("Có lỗi: " + e.toString());
                 }
-            } catch (IOException e) {
-                noti.showNotiError("Có lỗi: " + e.toString());
             }
         } else {
             noti.showNotiError("Vui lòng chọn thành viên muốn thay đổi thông tin");

@@ -4,15 +4,24 @@
  */
 package view;
 
+import common.Constant;
+import controller.UserController;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
+import model.Noti;
 
 /**
  *
  * @author Lê Ngọc Trường
  */
 public class Registerform extends javax.swing.JFrame {
+
+    // Tạo 1 userController để có thể sử lý logic liên quan đến dữ liệu của User
+    private UserController control = new UserController();
+    // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
+    private Noti noti = new Noti(this);
 
     /**
      * Creates new form Registerform
@@ -53,12 +62,6 @@ public class Registerform extends javax.swing.JFrame {
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerButtonActionPerformed(evt);
-            }
-        });
-
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
             }
         });
 
@@ -156,82 +159,76 @@ public class Registerform extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-       if (evt.getSource() == registerButton) {
+
         String maSV = maSVField.getText();
         String fullname = fullnameField.getText();
         String khoa = khoaField.getText();
         String lop = lopField.getText();
-        String password = new String(passwordField.getText().trim() );
+        String password = new String(passwordField.getText().trim());
         String email = emailField.getText();
         String repassword = new String(repasswordField.getText().trim());
 
-        try {
-            // Kiểm tra điều kiện nhập đầy đủ thông tin
-            if (maSV.isEmpty() || fullname.isEmpty() || khoa.isEmpty() || lop.isEmpty()
-                    || password.isEmpty() || email.isEmpty() || repassword.isEmpty()) {
-                throw new Exception("Vui lòng nhập đầy đủ thông tin!");
+        // Kiểm tra nhập đủ dữ liệu
+        if (maSV.trim().isEmpty() || fullname.trim().isEmpty() || khoa.trim().isEmpty() || lop.trim().isEmpty() || password.trim().isEmpty() || email.trim().isEmpty()) {
+            noti.showNotiError("Vui lòng nhập đầy đủ thông tin!");
+        } else {
+            // Kiểm ra RePassword trùng với Password
+            if (password.equalsIgnoreCase(repassword)) {
+                // Kiểm tra rằng buộc dữ liệu của password và email (Check Validate) ở đây sẽ check xem 
+                // mật khẩu hợp lệ phải chứa ít nhất một chữ cái thường, một số, có ít nhất 8 ký tự và chỉ bao gồm các ký tự được liệt kê
+                // Email hợp lệ có dạng abc@xyz.com
+                if (Constant.regexPassword.matcher(password).matches()) {
+                    if (Constant.regexEmail.matcher(email).matches()) {
+                        try {
+                            boolean kt = control.addUser(maSV, fullname, khoa, lop, password, email);
+                            if (kt) {
+                                // Hiện thi dialogBox thông tin 
+                                noti.showNotiInformation("Thêm thành viên thành công!!!");
+                                new Login().setVisible(true);
+                                this.setVisible(false);
+                            } else {
+                                // Hiển thị DialogBox báo lỗi
+                                noti.showNotiError("Thêm thành không thành công. Thành viên đã tồn tại!!!");
+                                maSVField.setText("");
+                                maSVField.requestFocus();
+                                fullnameField.setText("");
+                                khoaField.setText("");
+                                lopField.setText("");
+                                passwordField.setText("");
+                                emailField.setText("");
+                                repasswordField.setText("");
+                            }
+                        } catch (IOException e) {
+                            noti.showNotiError("Co loi: " + e.toString());
+                        }
+                    } else {
+                        // Hiển thị DialogBox lỗi
+                        noti.showNotiError("Email không hợp lệ, nhập lại");
+                        emailField.setText("");
+                        emailField.requestFocus();
+                    }
+                } else {
+                    // Hiển thị dialogbox lỗi
+                    noti.showNotiError("mật khẩu hợp lệ phải chứa ít nhất một chữ cái thường, một số, có ít nhất 8 ký tự");
+                    passwordField.setText("");
+                    repasswordField.setText("");
+                    passwordField.requestFocus();
+                }
             }
-
-            // Kiểm tra mã sinh viên không chứa chữ
-            if (!maSV.matches("\\d+")) {
-                throw new Exception("Mã sinh viên chỉ được chứa số!");
+            else{
+                // show thông báo
+                noti.showNotiError("Xác nhận mật khẩu không trùng nhau, nhập lại");
+                repasswordField.setText("");
+                repasswordField.requestFocus();
             }
-
-            // Kiểm tra mật khẩu có đủ 8 kí tự trở lên đủ chữ hoa chữ thường chữ số và kí tự đặc biệt
-            String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-            if (!password.matches(regex)) {
-                throw new Exception("Mật khẩu phải đủ 8 kí tự trở lên, đủ chữ hoa, chữ thường, chữ số và kí tự đặc biệt!");
-            }
-
-            // Kiểm tra email có đúng định dạng
-            if (!email.endsWith("@gmail.com")) {
-                throw new Exception("Email phải có định dạng @gmail.com!");
-            }
-
-            // Kiểm tra mật khẩu và nhập lại mật khẩu giống nhau
-            if (!password.equals(repassword)) {
-                throw new Exception("Mật khẩu và nhập lại mật khẩu không giống nhau!");
-            }
-
-            // Chuyển sang form đăng nhập
-            dispose();
-            new Login().setVisible(true);
-            
-            //ghi vao file (toi khong biet la file nào nên có gì sửa đoạn data.txt nếu muốn lưu file khác nhé)
-            FileWriter fw = new FileWriter("data.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Ghi dữ liệu vào file
-            bw.write(maSV + "," + fullname + "," + khoa + "," + lop + "," + email + "," + password);
-            bw.newLine();
-
-            // Đóng file
-            bw.close();
-            fw.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-
-    } else if (evt.getSource() == cancelButton) {
-    dispose();
-    }
-
-
     }//GEN-LAST:event_registerButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-     maSVField.setText("");
-     emailField.setText("");
-    fullnameField.setText("");
-    passwordField.setText("");
-    repasswordField.setText("");
-    khoaField.setText("");
-    lopField.setText("");
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
+        new Login().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
