@@ -7,6 +7,7 @@ package view;
 import controller.UserController;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 import model.Noti;
 import model.User;
@@ -62,23 +63,32 @@ public class SetDateInterview extends javax.swing.JFrame {
         }
 
         // Add các cột cho DTM
-        dmodel.addColumn("ID");
         dmodel.addColumn("Mã sinh viên");
         dmodel.addColumn("Họ tên");
         dmodel.addColumn("Khoa");
         dmodel.addColumn("Lớp");
-        dmodel.addColumn("Password");
+        dmodel.addColumn("Ngày phỏng vấn");
         dmodel.addColumn("Email");
         dmodel.addColumn("Trạng thái");
         dmodel.addColumn("Thông tin");
+        
+        // lấy HashMap thời gian phỏng vấn của user
+        HashMap<String, String> listUserDate = new HashMap<>();
+        try{
+            listUserDate = userController.readDateInterViewFromFile();
+        }catch(IOException e){
+            noti.showNotiError("Có lỗi: " + e.toString());
+        }
 
         // Add các dòng cho DTM, tuy nhiên các user phải ở trạng thái rảnh (Status = 0)
         for (User user : listUser) {
             if (user.getStatus() == 0) {
-                Object[] row = {user.getId(), user.getMaSV(), user.getFullName(), user.getKhoa(), user.getLop(), user.getPassword(), user.getEmail(), userController.getStatus(user.getStatus()), userController.getCheck(user.getCheck())};
+                Object[] row = {user.getMaSV(), user.getFullName(), user.getKhoa(), user.getLop(),listUserDate.get(user.getMaSV()), user.getEmail(), userController.getStatus(user.getStatus()), userController.getCheck(user.getCheck())};
                 dmodel.addRow(row);
             }
         }
+        
+        
     }
 
     /**
@@ -183,17 +193,18 @@ public class SetDateInterview extends javax.swing.JFrame {
         // Lấy ra model của bảng đang dùng
         DefaultTableModel model = (DefaultTableModel) tableUser.getModel();
         if (index != -1) {
-            String maSV = (String) model.getValueAt(index, 1);
+            String maSV = (String) model.getValueAt(index, 0);
             String date = txtNgayPV.getText().trim();
 
             try {
                 if (userController.writeDateInterView(maSV, date)) {
                     noti.showNotiInformation("Đã thêm lịch phỏng vấn cho thành viên " + maSV);
-                    txtNgayPV.setText("");
-                    txtNgayPV.requestFocus();
+                    new SetDateInterview(maSV, passwordAdmin).setVisible(true);
+                    this.setVisible(false);
                 }
             } catch (Exception e) {
                 noti.showNotiError("Thêm lịch phỏng vấn thất bại");
+                System.out.println(e.toString());
             }
         }
         else{

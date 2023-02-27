@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import model.User;
-import view.Login;
 
 /**
  *
@@ -58,8 +56,14 @@ public class UserController {
     }
     
     public boolean writeDateInterView(String maSV, String dateInterview) throws IOException{
-        fileController.OpenFileToWriteAppend(Constant.DATE_INTERVIEW);
-        fileController.getPrintWriter().println(maSV + "|" + dateInterview);
+        HashMap<String, String> list = readDateInterViewFromFile();
+        list.put(maSV, dateInterview);
+        fileController.OpenFileToWrite(Constant.DATE_INTERVIEW);
+        for(Map.Entry<String, String> entry : list.entrySet()){
+            String key = entry.getKey();
+            String value = entry.getValue();
+            fileController.getPrintWriter().println(key + "|" + value);
+        }
         fileController.CloseFileAfterWrite();
         return true;
     }
@@ -232,7 +236,7 @@ public class UserController {
                 return false;
             }
         }
-        long id = users.size() + 1;
+        long id = users.size();
         long idEvent = 0;
         User newUser = new User(id, maSV, hoTen, khoa, lop, password, email, status, check, idRole, idEvent);
         System.out.println(newUser.toString());
