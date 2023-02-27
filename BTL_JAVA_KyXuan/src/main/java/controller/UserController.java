@@ -7,6 +7,7 @@ package controller;
 import common.Constant;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +55,27 @@ public class UserController {
 
         fileController.CloseFileAfterWrite();
         return users;
+    }
+    
+    public boolean writeDateInterView(String maSV, String dateInterview) throws IOException{
+        fileController.OpenFileToWriteAppend(Constant.DATE_INTERVIEW);
+        fileController.getPrintWriter().println(maSV + "|" + dateInterview);
+        fileController.CloseFileAfterWrite();
+        return true;
+    }
+    
+    public HashMap<String,String> readDateInterViewFromFile() throws IOException{
+        HashMap<String, String> listStudentAndDate = new HashMap<>();
+        fileController.OpenFileToRead(Constant.DATE_INTERVIEW);
+        
+        while(fileController.scanner.hasNext()){
+            String data = fileController.scanner.nextLine();
+            String[] a = data.split("\\|");
+            
+            listStudentAndDate.put(a[0], a[1]);
+        }
+        
+        return listStudentAndDate;
     }
 
     public void closeUsersAfterRead(String file) {
@@ -151,6 +173,21 @@ public class UserController {
     public ArrayList<User> getListUsers() throws IOException {
         ArrayList<User> users = (ArrayList< User>) readUsersFromFile(Constant.USER_FILE);
         return users;
+    }
+    
+    // Get ra list User chưa chính thức
+    public ArrayList<User> getListUsersCCT() throws IOException{
+        // get ra list User
+        ArrayList<User> listUsers = getListUsers();
+        // ArrayList lưu user chưa chính thức
+        ArrayList<User> listUsersCCT = new ArrayList<>();
+        for(User user : listUsers){
+            if(user.getCheck() == 0){
+                listUsersCCT.add(user);
+            }
+        }
+        
+        return listUsersCCT;
     }
 
     public String getStatus(int status) {

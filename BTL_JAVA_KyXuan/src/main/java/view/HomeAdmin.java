@@ -90,6 +90,11 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         btnLenLich.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLenLich.setText("Lên lịch phỏng vấn");
+        btnLenLich.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLenLichActionPerformed(evt);
+            }
+        });
 
         btnThongKe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThongKe.setText("Thống kê");
@@ -156,6 +161,12 @@ public class HomeAdmin extends javax.swing.JFrame {
         new Statistical(maSV, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnThongKeActionPerformed
+
+    private void btnLenLichActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLenLichActionPerformed
+        // TODO add your handling code here:
+        new SetDateInterview(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnLenLichActionPerformed
 
     /**
      * @param args the command line arguments

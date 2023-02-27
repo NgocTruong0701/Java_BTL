@@ -7,6 +7,9 @@ package view;
 import common.Constant;
 import controller.UserController;
 import java.io.IOException;
+import java.util.HashMap;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import model.Noti;
 import model.User;
 
@@ -35,6 +38,25 @@ public class HomeStudent extends javax.swing.JFrame {
         this.maSV = maSV;
         this.password = password;
         this.showInfor();
+        showNoti();
+    }
+    
+    // 1 JDiaLog để hiển thị thông báo
+    private void showNoti(){
+        try{
+            HashMap<String, String> listDateInterview = control.readDateInterViewFromFile();
+            String date = listDateInterview.get(maSV);
+            if(date != null){
+                JDialog mess = new JDialog(this, "Thông báo");
+                mess.add(new JLabel("Thời gian phỏng vấn của bạn: " + date));
+                mess.setSize(300,300);
+                mess.setLocationRelativeTo(this);
+                setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                mess.setVisible(true);
+            }
+        }catch(IOException e){
+            noti.showNotiError("Có lỗi:" + e.toString());
+        }
     }
 
     // Phương thức hiển thị thông tin sinh viên lên màn hình khi View HomeStudent được khởi tạo
