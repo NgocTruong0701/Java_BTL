@@ -1,0 +1,340 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package view;
+
+import controller.BudgetController;
+import controller.EventController;
+import controller.UserController;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import model.Event;
+import model.Noti;
+
+/**
+ *
+ * @author Lê Ngọc Trường
+ */
+public class Statistical extends javax.swing.JFrame {
+
+    // Tạo 1 đối tượng EventController để có thể thao tác với dữ liệu Event
+    EventController eventController = new EventController();
+    // Tạo 1 UserController để có thể thao tác với dữ liệu User
+    UserController userController = new UserController();
+    // Tạo 1 BudgetController để thao tác với dữ liệu Budget
+    BudgetController budgetController = new BudgetController();
+    // Tạo 1 đối tượng Notification để có thể dùng hiển thị các thông báo khi thực hiện 1 điều gì đó. Tối ưu sử dụng lại code
+    Noti noti = new Noti(this);
+    // Lưu thông tin tổng số tv, số tv chưa chính thức, số thành viên chính thức
+    ArrayList<Integer> numberUser = new ArrayList<>();
+    // Lưu thông tin danh sách Event
+    ArrayList<Event> listEvent;
+    // Lưu tổng số sự kiện
+    int sumEvent = 0;
+    // lưu tổng chi phí tất cả sự kiện
+    int sumOperatingAllEvent = 0;
+    // Lưu ngân sách đội
+    long sumBudget = 0;
+    // Tao DefaultTableModel
+    DefaultTableModel dmodel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            // chỉ được xem, không được sửa row and column nào hết
+            return false;
+        }
+    };
+    // 2 biến lưu thông tin admin
+    private String maSV;
+    private String password;
+
+    /**
+     * Creates new form Statistical
+     */
+    public Statistical() {
+        initComponents();
+        showInfor();
+        pack();
+    }
+
+    public Statistical(String maSV, String password) {
+        initComponents();
+        this.maSV = maSV;
+        this.password = password;
+        showInfor();
+        pack();
+    }
+
+    // Method show Information 
+    private void showInfor() {
+        // Lấy ra tổng số user, số user chưa chính thức, số user chính thức
+        try {
+            numberUser = userController.getNumberUser();
+        } catch (IOException e) {
+            noti.showNotiError("Có lỗi: " + e.toString());
+        }
+
+        // Lấy ra danh sách sự kiện của đội
+        try {
+            listEvent = eventController.getListEvents();
+        } catch (IOException e) {
+            noti.showNotiError("Có lỗi: " + e.toString());
+        } catch (Exception e2) {
+            noti.showNotiError("Có lỗi: " + e2.toString());
+        }
+
+        dmodel.addColumn("ID");
+        dmodel.addColumn("Tên sự kiện");
+        dmodel.addColumn("Ngày bắt đầu");
+        dmodel.addColumn("Ngày kết thúc");
+        dmodel.addColumn("Số lượng thành viên cần");
+        dmodel.addColumn("Địa chỉ");
+        dmodel.addColumn("Tổng chi phí");
+
+        // get các chi phí hoạt động có cùng IdEvent và đưa vào ListOperatingFee của Evend có IdEvent đó
+        for (Event e : listEvent) {
+            try {
+                eventController.setListOperatingFee(e);
+            } catch (IOException e1) {
+                noti.showNotiError("Có lỗi: " + e1.toString());
+            }
+        }
+        // Ghi row Event vào model
+        for (Event e : listEvent) {
+            long costTotal = eventController.getCostTotal(e);
+
+            Object[] row = {e.getId(), e.getNameEvent(), e.getStartDay(), e.getEndDay(), e.getNumberOfStudent(), e.getAddress(), costTotal};
+            dmodel.addRow(row);
+        }
+
+        // Lấy ra tổng số sự kiện
+        sumEvent = listEvent.size();
+
+        // Lấy ra tổng chi phí tất cả sự kiện
+        for (Event e : listEvent) {
+            sumOperatingAllEvent += eventController.getCostTotal(e);
+        }
+
+        // Lấy ra ngân sách của đội và trừ đi tổng chi phí tất cả sự kiện để biết ngân sách đội còn bao nhiêu
+        try {
+            sumBudget = budgetController.getSumBudget();
+        } catch (Exception e) {
+            noti.showNotiError("Có lỗi: " + e.toString());
+        }
+        sumBudget -= sumOperatingAllEvent;
+
+        // in ra màn hình
+        txtTongTV.setText(txtTongTV.getText() + " " + numberUser.get(0));
+        txtTVChuaChinhThuc.setText(txtTVChuaChinhThuc.getText() + " " + numberUser.get(1));
+        txtTVChinhThuc.setText(txtTVChinhThuc.getText() + " " + numberUser.get(2));
+        txtSoSK.setText(txtSoSK.getText() + " " + listEvent.size());
+        txtTongCP.setText(txtTongCP.getText() + " " + sumOperatingAllEvent);
+        txtNganSach.setText(txtNganSach.getText() + " " + sumBudget);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        txtTVChuaChinhThuc = new javax.swing.JLabel();
+        txtTongTV = new javax.swing.JLabel();
+        txtTVChinhThuc = new javax.swing.JLabel();
+        txtSoSK = new javax.swing.JLabel();
+        txtTongCP = new javax.swing.JLabel();
+        txtNganSach = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableEvent = new javax.swing.JTable();
+        btnPrint = new javax.swing.JButton();
+        btnExists = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtTVChuaChinhThuc.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtTVChuaChinhThuc.setText("Số thành viên chưa chính thức:");
+
+        txtTongTV.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtTongTV.setText("Tổng thành viên:");
+
+        txtTVChinhThuc.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtTVChinhThuc.setText("Số thành viên chính thức:");
+
+        txtSoSK.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtSoSK.setText("Số sự kiện đội:");
+
+        txtTongCP.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtTongCP.setText("Tổng chi phí hoạt động:");
+
+        txtNganSach.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        txtNganSach.setText("Ngân sách đội:");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách sự kiện đội", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+
+        tableEvent.setModel(dmodel);
+        jScrollPane1.setViewportView(tableEvent);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+        );
+
+        btnPrint.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnPrint.setText("In danh sách");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
+        btnExists.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnExists.setText("Thoát");
+        btnExists.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExistsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(29, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTVChuaChinhThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNganSach, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTongTV, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtSoSK, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTVChinhThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTongCP, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(200, 200, 200))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(237, 237, 237)
+                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(145, 145, 145)
+                .addComponent(btnExists, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTongTV, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSoSK, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTVChinhThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTongCP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTVChuaChinhThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNganSach, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(86, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnExists, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExistsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExistsActionPerformed
+        // TODO add your handling code here:
+        new HomeAdmin(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnExistsActionPerformed
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            boolean ch = budgetController.ghiDuLieu(numberUser.get(0)+"", numberUser.get(1)+"", numberUser.get(2)+"", sumEvent+"", sumOperatingAllEvent+"", sumBudget+"", listEvent);
+            if (ch) {
+                noti.showNotiInformation("Thống kê thành công. Kiểm tra lại dữ liệu ở file Statistical.txt");
+            }
+        } catch (Exception e) {
+            noti.showNotiError("Có lỗi: " + e.toString());
+            System.out.println("Lỗi: " + e.toString());
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Statistical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Statistical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Statistical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Statistical.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Statistical().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExists;
+    private javax.swing.JButton btnPrint;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableEvent;
+    private javax.swing.JLabel txtNganSach;
+    private javax.swing.JLabel txtSoSK;
+    private javax.swing.JLabel txtTVChinhThuc;
+    private javax.swing.JLabel txtTVChuaChinhThuc;
+    private javax.swing.JLabel txtTongCP;
+    private javax.swing.JLabel txtTongTV;
+    // End of variables declaration//GEN-END:variables
+}

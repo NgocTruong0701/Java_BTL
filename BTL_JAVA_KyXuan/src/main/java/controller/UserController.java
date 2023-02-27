@@ -238,4 +238,24 @@ public class UserController {
         return true;
     }
     
+    public ArrayList<Integer> getNumberUser() throws IOException{
+        ArrayList<Integer> numberUser = new ArrayList<>();
+        ArrayList<User> listUsers = getListUsers();
+        numberUser.add(listUsers.size());
+        int soTVChua = 0;
+        int soTVCT = 0;
+        for(User user : listUsers){
+            if(user.getCheck() == 0){
+                soTVChua++;
+            }
+            if(user.getCheck() == 1){
+                soTVCT++;
+            }
+        }
+        numberUser.add(soTVChua);
+        numberUser.add(soTVCT);
+        
+        return numberUser;
+    }
+    
 }

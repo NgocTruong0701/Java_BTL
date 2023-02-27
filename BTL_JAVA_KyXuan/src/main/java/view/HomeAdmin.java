@@ -93,6 +93,11 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         btnThongKe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThongKe.setText("Thống kê");
+        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThongKeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,6 +150,12 @@ public class HomeAdmin extends javax.swing.JFrame {
         new QLEvent(maSV, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnQuanLySuKienActionPerformed
+
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
+        // TODO add your handling code here:
+        new Statistical(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnThongKeActionPerformed
 
     /**
      * @param args the command line arguments
