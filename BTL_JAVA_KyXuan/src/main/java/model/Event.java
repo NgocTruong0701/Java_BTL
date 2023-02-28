@@ -5,7 +5,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +12,7 @@ import java.util.List;
  * @author linhc
  */
 public class Event {
+
     private Long id;
     private String nameEvent;
     private String startDay;
@@ -66,7 +66,6 @@ public class Event {
         this.endDay = endDay;
     }
 
-    
     public Integer getNumberOfStudent() {
         return numberOfStudent;
     }
@@ -98,11 +97,10 @@ public class Event {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-    
+
     // phương thức thêm các khoản phí 
-    public void addFees(OperatingFee fee){
+    public void addFees(OperatingFee fee) {
         operatingFees.add(fee);
     }
-    
-    
+
 }

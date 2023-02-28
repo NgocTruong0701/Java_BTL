@@ -6,10 +6,6 @@ package controller;
 
 import common.Constant;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Event;
@@ -97,7 +93,8 @@ public class EventController {
         return totalCost;
     }
 
-    public Event getEvent(Long idEvent) throws Exception {
+    public Event getEvent(long idEvent) throws Exception {
+//        System.out.println(idEvent);
         ArrayList<Event> listEvent = (ArrayList<Event>) readEventsFromFile(Constant.EVENT_FILE);
         for (Event e : listEvent) {
             if (e.getId() == idEvent) {
@@ -106,4 +103,36 @@ public class EventController {
         }
         return null;
     }
+
+    public Boolean createEvent(String nameEvent, String startDay, String endDay, Integer numberOfStudent, String address) throws Exception {
+        List<Event> events = readEventsFromFile(Constant.EVENT_FILE);
+        Integer id = events.size();
+        long idnew = id + 1;
+        Event event = new Event(idnew, nameEvent, startDay, endDay, numberOfStudent, address);
+
+        events.add(event);
+        writeEventToFile(events, Constant.EVENT_FILE);
+        return true;
+    }
+    
+    public Boolean repairEvent(long idEvent, String nameEvent, String startDay, String endDay, Integer numberOfStudent, String address) throws Exception {
+        List<Event> events = readEventsFromFile(Constant.EVENT_FILE);
+        
+        for (int i=0; i<events.size(); i++) {
+            if (events.get(i).getId().equals(idEvent)) {
+                Event event = events.get(i);
+                event.setAddress(address);
+                event.setEndDay(endDay);
+                event.setNameEvent(nameEvent);
+                event.setNumberOfStudent(numberOfStudent);
+                event.setStartDay(startDay);
+                
+                writeEventToFile(events, Constant.EVENT_FILE);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
 }
