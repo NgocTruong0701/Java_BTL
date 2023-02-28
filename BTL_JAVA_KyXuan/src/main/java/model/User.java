@@ -129,8 +129,4 @@ public class User {
     public void setIdEvent(Long idEvent) {
         this.idEvent = idEvent;
     }
-    
-    
-    
-    
 }

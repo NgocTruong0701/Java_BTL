@@ -35,6 +35,17 @@ public class FileController {
             e.printStackTrace();
         }
     }
+    
+    public void OpenFileToWriteAppend(String fileName){
+        try {
+            fileWriter = new FileWriter(fileName, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            printWriter = new PrintWriter(bufferedWriter);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public void CloseFileAfterWrite() {
         try {

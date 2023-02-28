@@ -7,12 +7,11 @@ package controller;
 import common.Constant;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import model.User;
-import view.Login;
 
 /**
  *
@@ -54,6 +53,33 @@ public class UserController {
 
         fileController.CloseFileAfterWrite();
         return users;
+    }
+    
+    public boolean writeDateInterView(String maSV, String dateInterview) throws IOException{
+        HashMap<String, String> list = readDateInterViewFromFile();
+        list.put(maSV, dateInterview);
+        fileController.OpenFileToWrite(Constant.DATE_INTERVIEW);
+        for(Map.Entry<String, String> entry : list.entrySet()){
+            String key = entry.getKey();
+            String value = entry.getValue();
+            fileController.getPrintWriter().println(key + "|" + value);
+        }
+        fileController.CloseFileAfterWrite();
+        return true;
+    }
+    
+    public HashMap<String,String> readDateInterViewFromFile() throws IOException{
+        HashMap<String, String> listStudentAndDate = new HashMap<>();
+        fileController.OpenFileToRead(Constant.DATE_INTERVIEW);
+        
+        while(fileController.scanner.hasNext()){
+            String data = fileController.scanner.nextLine();
+            String[] a = data.split("\\|");
+            
+            listStudentAndDate.put(a[0], a[1]);
+        }
+        
+        return listStudentAndDate;
     }
 
     public void closeUsersAfterRead(String file) {
@@ -152,6 +178,21 @@ public class UserController {
         ArrayList<User> users = (ArrayList< User>) readUsersFromFile(Constant.USER_FILE);
         return users;
     }
+    
+    // Get ra list User chưa chính thức
+    public ArrayList<User> getListUsersCCT() throws IOException{
+        // get ra list User
+        ArrayList<User> listUsers = getListUsers();
+        // ArrayList lưu user chưa chính thức
+        ArrayList<User> listUsersCCT = new ArrayList<>();
+        for(User user : listUsers){
+            if(user.getCheck() == 0){
+                listUsersCCT.add(user);
+            }
+        }
+        
+        return listUsersCCT;
+    }
 
     public String getStatus(int status) {
         String tt = "";
@@ -195,7 +236,7 @@ public class UserController {
                 return false;
             }
         }
-        long id = users.size() + 1;
+        long id = users.size();
         long idEvent = 0;
         User newUser = new User(id, maSV, hoTen, khoa, lop, password, email, status, check, idRole, idEvent);
         System.out.println(newUser.toString());
