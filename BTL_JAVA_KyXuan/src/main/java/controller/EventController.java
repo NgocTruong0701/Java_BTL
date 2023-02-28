@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Event;
 import model.OperatingFee;
+import model.User;
 
 /**
  *
@@ -61,10 +62,27 @@ public class EventController {
     public void closeEventAfterRead(String file) {
         fileController.CloseFileAfterWrite();
     }
+    
+        public List<User> readUserOfEvent(long idEvent) throws IOException, Exception {
+        List<User> userOfEvent = new ArrayList<>();
+        // Lấy ra UserController để thao tác
+        UserController userController = new UserController();
+        // Lấy ra List User
+        ArrayList<User> listUser = userController.getListUsers();
+        for (User user : listUser) {
+            if (user.getIdEvent() == idEvent) {
+                userOfEvent.add(user);
+            }
+        }
+        return userOfEvent;
+    }
 
     // Get ra list Event trong File Event
     public ArrayList<Event> getListEvents() throws IOException, Exception {
         ArrayList<Event> listEvent = (ArrayList<Event>) readEventsFromFile(Constant.EVENT_FILE);
+        for (Event e : listEvent) {
+            e.setUsers(readUserOfEvent(e.getId()));
+        }
         return listEvent;
     }
 
@@ -92,12 +110,13 @@ public class EventController {
         }
         return totalCost;
     }
-
+    
     public Event getEvent(long idEvent) throws Exception {
 //        System.out.println(idEvent);
         ArrayList<Event> listEvent = (ArrayList<Event>) readEventsFromFile(Constant.EVENT_FILE);
         for (Event e : listEvent) {
             if (e.getId() == idEvent) {
+                readUserOfEvent(e.getId());
                 return e;
             }
         }
@@ -114,11 +133,11 @@ public class EventController {
         writeEventToFile(events, Constant.EVENT_FILE);
         return true;
     }
-    
+
     public Boolean repairEvent(long idEvent, String nameEvent, String startDay, String endDay, Integer numberOfStudent, String address) throws Exception {
         List<Event> events = readEventsFromFile(Constant.EVENT_FILE);
-        
-        for (int i=0; i<events.size(); i++) {
+
+        for (int i = 0; i < events.size(); i++) {
             if (events.get(i).getId().equals(idEvent)) {
                 Event event = events.get(i);
                 event.setAddress(address);
@@ -126,13 +145,30 @@ public class EventController {
                 event.setNameEvent(nameEvent);
                 event.setNumberOfStudent(numberOfStudent);
                 event.setStartDay(startDay);
-                
+
                 writeEventToFile(events, Constant.EVENT_FILE);
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
+    public boolean addUserForEvent(String masv, long idEvent) throws IOException, Exception {
+        // Lấy ra UserController để thao tác
+        UserController userController = new UserController();
+        // Lấy ra List User
+        ArrayList<User> listUser = userController.getListUsers();
+
+        // thay đổi trạng thái của user thành có nhiệm vụ (status = 2) và thay đổi idEvent của user là idEvent của event
+        for (User user : listUser) {
+            if (user.getMaSV().equalsIgnoreCase(masv)) {
+                user.setStatus(2);
+                user.setIdEvent(idEvent);
+            }
+        }
+        // ghi su thay doi nay vao file User
+        userController.writeUsersToFile(listUser, Constant.USER_FILE);
+        return true;
+    }
 }

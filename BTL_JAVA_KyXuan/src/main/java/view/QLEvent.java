@@ -247,7 +247,7 @@ public class QLEvent extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExistActionPerformed
 
     private void btnAdd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd1ActionPerformed
-        new AddEvent().setVisible(true);
+        new AddEvent(maSV,password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAdd1ActionPerformed
 
@@ -256,53 +256,19 @@ public class QLEvent extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnFeeManagerActionPerformed
 
-    private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepairActionPerformed
-
-<<<<<<< HEAD
+    private void btnRepairActionPerformed(java.awt.event.ActionEvent evt) {                                          
         int index = tableEvent.getSelectedRow();
         // Lấy ra model của bảng đang dùng
         DefaultTableModel dmodel = (DefaultTableModel) tableEvent.getModel();
         if(index != -1){
             long idEvent = (long) dmodel.getValueAt(index, 0);
             System.out.println(idEvent);
-            new RepairEvent(idEvent).setVisible(true);
+            new RepairEvent(maSV, password, idEvent).setVisible(true);
             this.setVisible(false);
-=======
-    private void btnAddUserToEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserToEventActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnAddUserToEventActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QLEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QLEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QLEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QLEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
->>>>>>> b6059a865069eac202fca32083510a75c92e0080
-        }
-        else{
+        }else{
             noti.showNotiInformation("Vui lòng chọn sự kiện cần sửa");
         }
-    }//GEN-LAST:event_btnRepairActionPerformed
+    }                  
 
     private void clicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicked
         // TODO add your handling code here:
@@ -314,6 +280,12 @@ public class QLEvent extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_jScrollPane1MousePressed
+
+    private void btnAddUserToEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserToEventActionPerformed
+        // TODO add your handling code here:
+        new AddUserForEvent(maSV, password).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnAddUserToEventActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {

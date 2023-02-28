@@ -41,7 +41,7 @@ public class UserController {
         }
 
         fileController.CloseFileAfterRead(filename);
-
+        
         return users;
     }
 
@@ -192,6 +192,21 @@ public class UserController {
         }
         
         return listUsersCCT;
+    }
+    
+    // Lấy ra list User chưa chính thức và rảnh
+    public ArrayList<User> getListUserFree() throws IOException{
+        // get ra list User
+        ArrayList<User> listUsers = getListUsers();
+        // ArrayList lưu user chính thức và rảnh (ĐK : status = 0, check = 1)
+        ArrayList<User> listUsersFree = new ArrayList<>();
+        for(User user : listUsers){
+            if(user.getStatus() == 0 && user.getCheck() == 1){
+                listUsersFree.add(user);
+            }
+        }
+        
+        return listUsersFree;
     }
 
     public String getStatus(int status) {

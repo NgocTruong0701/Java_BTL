@@ -5,6 +5,7 @@
 package view;
 
 import controller.EventController;
+import java.text.ParseException;
 import model.Noti;
 
 /**
@@ -22,6 +23,12 @@ public class AddEvent extends javax.swing.JFrame {
 
     public AddEvent() {
         initComponents();
+    }
+
+    public AddEvent(String maSV, String password) {
+        initComponents();
+        this.maSV = maSV;
+        this.password = password;
     }
 
     @SuppressWarnings("unchecked")
@@ -88,9 +95,10 @@ public class AddEvent extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnThem)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -142,13 +150,22 @@ public class AddEvent extends javax.swing.JFrame {
         String end = endEvent.getText().trim();
         String start = starEvent.getText().trim();
         String name = nameEvent.getText().trim();
-        Integer numberofStudent = Integer.parseInt(number.getText().trim());
 
         try {
-            eventController.createEvent(name, start, end, numberofStudent, addres);
-            noti.showNotiInformation("Thêm sự kiện thành công");
-        } catch (Exception ex) {
-            noti.showNotiError("Thêm sự kiện không thành công");
+            if (name.isEmpty() || end.isEmpty() || start.isEmpty() || addres.isEmpty()) {
+                noti.showNotiError("Vui lòng nhập đầy đủ thông tin");
+            }
+            Integer numberofStudent = Integer.parseInt(number.getText().trim());
+            try {
+                eventController.createEvent(name, start, end, numberofStudent, addres);
+                noti.showNotiInformation("Thêm sự kiện thành công");
+                new QLEvent(maSV, password).setVisible(true);
+                this.setVisible(false);
+            } catch (Exception ex) {
+                noti.showNotiError("Thêm sự kiện không thành công");
+            }
+        } catch (Exception e) {
+            noti.showNotiError("Số lượng thành viên là số.");
         }
 
 

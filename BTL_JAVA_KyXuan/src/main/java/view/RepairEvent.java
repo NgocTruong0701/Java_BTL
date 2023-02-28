@@ -4,10 +4,7 @@
  */
 package view;
 
-import static com.sun.javadoc.Doclet.start;
 import controller.EventController;
-import java.awt.GraphicsConfiguration;
-import java.awt.HeadlessException;
 import model.Event;
 import model.Noti;
 
@@ -21,13 +18,24 @@ public class RepairEvent extends javax.swing.JFrame {
     Noti noti = new Noti(this);
     Event event = new Event();
     
-     public long idEvent;
+    private String masv;
+    private String password;
+    
+    public long idEvent;
     /**
      * Creates new form RepairEvent
      * @param event
      */
     public RepairEvent(long idEvent) {
         initComponents();
+        this.idEvent = idEvent;
+        showInfor();
+    }
+
+    public RepairEvent(String masv, String password, long idEvent) {
+        initComponents();
+        this.masv = masv;
+        this.password = password;
         this.idEvent = idEvent;
         showInfor();
     }
@@ -113,10 +121,10 @@ public class RepairEvent extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)

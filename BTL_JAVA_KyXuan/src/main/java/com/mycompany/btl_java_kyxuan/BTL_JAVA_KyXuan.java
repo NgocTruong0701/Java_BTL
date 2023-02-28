@@ -4,6 +4,8 @@
 
 package com.mycompany.btl_java_kyxuan;
 
+import view.Login;
+
 /**
  *
  * @author linhc
@@ -11,6 +13,7 @@ package com.mycompany.btl_java_kyxuan;
 public class BTL_JAVA_KyXuan {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.setProperty("file.encoding", "UTF-8");
+        Login view = new Login();
     }
 }

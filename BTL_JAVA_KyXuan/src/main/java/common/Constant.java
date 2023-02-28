@@ -20,6 +20,7 @@ public class Constant {
     public static final String USER_CUR_FILE ="User_Cur.DAT";
     public static final String STATSTICAL_FILE = "Statistical.txt";
     public static final String DATE_INTERVIEW = "DateInterView.DAT";
+    public static final String USEROFEVENT = "Userofevent.DAT";
     
     public static Pattern regexPassword = Pattern.compile("^(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,}$");
     public static Pattern regexEmail = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
