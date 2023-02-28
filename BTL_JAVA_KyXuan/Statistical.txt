@@ -1,9 +1,10 @@
-Tong thanh vien: 6	So su kien doi: 3
-So thanh vien chinh thuc: 4	Tong chi phi hoat dong: 74000
-So thanh vien chua chinh thuc: 2	Ngan sach doi: 2126000
+Tong thanh vien: 8	So su kien doi: 4
+So thanh vien chinh thuc: 5	Tong chi phi hoat dong: 87345
+So thanh vien chua chinh thuc: 3	Ngan sach doi: 2112655
 
 	=======Danh sach su kien doi========
 ID    Ten su kien          Ngay bat dau    Ngay ket thuc   So luong TV     Dia chi         Tong chi phi   
 1     Tuyen thanh vien     15/09/2023      15/09/2023      15              Ha Nam          30000          
 2     Du lich              14/05/2023      15/05/2023      100             Soc Son Ha Noi  12000          
-3     Tinh nguyen          25/09/2023      27/09/2023      45              Chua Ha Ha Noi  32000          
+3     Tinh nguyen          25/09/2023      27/09/2023      46              Chua Ha Ha Noi  33000          
+4     Thi                  02/03/2023      02/03/2023      61              Dai hoc CNHN    12345          
