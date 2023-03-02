@@ -198,7 +198,7 @@ public class RepairEvent extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        new QLEvent().setVisible(true);
+        new QLEvent(masv, password).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnExitActionPerformed
 

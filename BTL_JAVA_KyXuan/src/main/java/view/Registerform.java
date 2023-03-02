@@ -12,10 +12,6 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import model.Noti;
 
-/**
- *
- * @author Lê Ngọc Trường
- */
 public class Registerform extends javax.swing.JFrame {
 
     // Tạo 1 userController để có thể sử lý logic liên quan đến dữ liệu của User
